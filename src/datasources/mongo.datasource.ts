@@ -1,6 +1,6 @@
 import {inject, lifeCycleObserver, LifeCycleObserver} from '@loopback/core';
 import {juggler} from '@loopback/repository';
-
+/*
 const config = {
   name: 'mongo',
   connector: 'mongodb',
@@ -9,6 +9,19 @@ const config = {
   port: 27017,
   user: 'manga_user_db',
   password: 'yz2kUP12ieGReOZyz2kUP12ieGReOZy',
+  database: 'mangaDB',
+  useNewUrlParser: true
+};*/
+
+
+const config = {
+  name: 'mongodb',
+  connector: 'mongodb',
+  url: 'mongodb://localhost:27017/mangaDB',
+  host: 'localhost',
+  port: 27017,
+  user: '',
+  password: '',
   database: 'mangaDB',
   useNewUrlParser: true
 };
