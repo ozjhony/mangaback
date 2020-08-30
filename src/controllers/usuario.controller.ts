@@ -4,25 +4,33 @@ import {
   Filter,
   FilterExcludingWhere,
   repository,
-  Where,
+  Where
 } from '@loopback/repository';
 import {
-  post,
-  param,
-  get,
-  getModelSchemaRef,
-  patch,
+  del, get,
+  getModelSchemaRef, param,
+
+
+  patch, post,
+
+
+
+
   put,
-  del,
-  requestBody,
+
+  requestBody
 } from '@loopback/rest';
+import {serviceKeys as keys} from '../keys/service-keys';
 import {Usuario} from '../models';
-import {UsuarioRepository} from '../repositories';
+import {UserlogRepository, UsuarioRepository} from '../repositories';
+import {EncryptDecrypt} from '../service/encryptdescrypt.service';
 
 export class UsuarioController {
   constructor(
     @repository(UsuarioRepository)
-    public usuarioRepository : UsuarioRepository,
+    public usuarioRepository: UsuarioRepository,
+    @repository(UserlogRepository)
+    public userlogRepository: UserlogRepository
   ) {}
 
   @post('/usuario', {
@@ -46,7 +54,19 @@ export class UsuarioController {
     })
     usuario: Omit<Usuario, 'id'>,
   ): Promise<Usuario> {
-    return this.usuarioRepository.create(usuario);
+    let us = await this.usuarioRepository.create(usuario);
+    let password1 = new EncryptDecrypt(keys.MD5).Encrypt(us.celular);
+    let password2 = new EncryptDecrypt(keys.MD5).Encrypt(password1);
+    let ul = {
+      username: us.celular,
+      password: password2,
+      role: 1,
+      usuarioId: us.id
+    };
+    let user = await this.userlogRepository.create(ul);
+    user.password = password1;
+    us.userlog = user
+    return us;
   }
 
   @get('/usuario/count', {
@@ -157,6 +177,11 @@ export class UsuarioController {
     @param.path.string('id') id: string,
     @requestBody() usuario: Usuario,
   ): Promise<void> {
+    let us = await this.userlogRepository.findOne({where: {usuarioId: usuario.id}})
+    if (us) {
+      us.username = usuario.celular;
+      await this.userlogRepository.replaceById(us.id, us);
+    }
     await this.usuarioRepository.replaceById(id, usuario);
   }
 

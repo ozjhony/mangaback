@@ -12,3 +12,4 @@ export * from './image.controller';
 export * from './capitulo.controller';
 export * from './usuario.controller';
 export * from './userlog.controller';
+export * from './usuario-userlog.controller';
