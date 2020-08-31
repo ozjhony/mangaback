@@ -13,3 +13,5 @@ export * from './capitulo.controller';
 export * from './usuario.controller';
 export * from './userlog.controller';
 export * from './usuario-userlog.controller';
+export * from './file-upload.controller';
+export * from './file-download.controller';
