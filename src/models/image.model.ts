@@ -14,7 +14,7 @@ export class Image extends Entity {
     type: 'string',
     required: true,
   })
-  order: number;
+  order?: number;
 
 
   @property({

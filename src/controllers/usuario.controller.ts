@@ -55,13 +55,14 @@ export class UsuarioController {
     usuario: Omit<Usuario, 'id'>,
   ): Promise<Usuario> {
     let us = await this.usuarioRepository.create(usuario);
-    let password1 = await new EncryptDecrypt(keys.MD5).Encrypt(us.celular);
+    let password1 =await new EncryptDecrypt(keys.MD5).Encrypt(us.celular);
     let password2 = new EncryptDecrypt(keys.MD5).Encrypt(password1);
     let ul = {
       username: us.celular,
       password: password2,
       role: 1,
       usuarioId: us.id
+
     };
     let user = await this.userlogRepository.create(ul);
     user.password = password1;
