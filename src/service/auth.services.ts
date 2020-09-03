@@ -4,7 +4,7 @@ import {PasswordKeys as passKeys} from '../keys/password-keys';
 import {serviceKeys as keys} from '../keys/service-keys';
 import {Userlog} from '../models';
 import {UserlogRepository} from '../repositories';
-import {EncryptDecrypt} from './encryptDescrypt.service';
+import {EncryptDecrypt} from './encryptdescrypt.service';
 const jwt = require("jsonwebtoken");
 
 export class AuthService {
